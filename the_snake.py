@@ -141,14 +141,14 @@ class Snake(GameObject):
     Змейка представлена списком координат сегментов тела.
     """
 
-    def __init__(self, body_color=SNAKE_COLOR):
+    def __init__(self, position=CENTER, body_color=SNAKE_COLOR):
         """Инициализирует начальное состояние змейки.
 
         Args:
             body_color: Цвет змейки в формате RGB.
                         По умолчанию — зелёный.
         """
-        super().__init__(position=CENTER, body_color=body_color)
+        super().__init__(position=position, body_color=body_color)
         self.reset()
 
     def update_direction(self, new_direction):
@@ -181,11 +181,8 @@ class Snake(GameObject):
 
     def draw(self):
         """Отрисовывает змейку на экране и затирает след хвоста."""
-        for position in self.positions[1:]:
+        for position in self.positions:
             self.draw_cell(position)
-
-        # Отрисовка головы змейки:
-        self.draw_cell(self.get_head_position())
 
         # Затирание последнего сегмента:
         if self.last:
@@ -260,7 +257,7 @@ def main():
         if snake.get_head_position() == apple.position:
             snake.length += 1
             apple.randomize_position(occupied=snake.positions)
-        elif snake.get_head_position() in snake.positions[1:]:
+        elif snake.get_head_position() in snake.positions[4:]:
             snake.reset()
             screen.fill(BOARD_BACKGROUND_COLOR)
             apple.randomize_position(occupied=snake.positions)
